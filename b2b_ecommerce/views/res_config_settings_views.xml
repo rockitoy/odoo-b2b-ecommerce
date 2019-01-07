@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.b2b.ecommerce</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="webmaster_settings" position="after">
+                <h2>B2B eCommerce</h2>
+                <div class="row mt16 o_settings_container" id="b2b_ecommerce_config_settings">
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="b2b_hide_price_setting">
+                        <div class="o_setting_left_pane">
+                            <field name="b2b_hide_price" widget="checkbox"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="b2b_hide_price"/>
+                            <div class="text-muted">
+                                Hide price from not logged-in users
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="hide_add_cart_setting">
+                        <div class="o_setting_left_pane">
+                            <field name="b2b_hide_add_cart" widget="checkbox"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="b2b_hide_add_cart"/>
+                            <div class="text-muted">
+                               Hide 'Add to Cart' selection from not logged-in users
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="b2b_hide_common_text_setting" title="check to hide common promises from not logged-in users.">
+                        <div class="o_setting_left_pane">
+                            <field name="b2b_hide_common_text" widget="checkbox"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="b2b_hide_common_text"/>
+                            <div class="text-muted">
+                                Hide money back gaurantee and other common promises from not logged-in users
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
