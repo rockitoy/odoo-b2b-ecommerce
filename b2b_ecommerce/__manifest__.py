@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2017-present  Technaureus Info Solutions(<http://www.technaureus.com/>).
+# This module and its content is copyright of Technaureus Info Solutions Pvt. Ltd.
+# - © Technaureus Info Solutions Pvt. Ltd 2021. All rights reserved.
 
 {
     'name': 'B2B eCommerce',
-    'version': '1.0',
+    'version': '14.0.0.0',
     'category': 'Website',
     'sequence': 1,
-    'author':'Technaureus Info Solutions Pvt. Ltd.',
+    'author': 'Technaureus Info Solutions Pvt. Ltd.',
     'summary': 'Business to Business Ecommerce',
     'website': 'http://www.technaureus.com/',
     'description': """

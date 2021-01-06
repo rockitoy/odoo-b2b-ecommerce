@@ -2,26 +2,50 @@
 <odoo>
 
     <template id="products_item" name="Products item" inherit_id="website_sale.products_item">
-        <xpath expr="//section/div" position="replace">
+        <xpath expr="//div[2]/div/div" position="replace">
             <t t-set="flag" t-value="True"/>
             <t t-if="user_id.partner_id.name == 'Public user' and b2b_hide_price == 'True'">
                 <t t-set="flag" t-value="False"/>
             </t>
-            <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price" t-if="product.product_variant_ids and flag">
+            <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price"
+                 t-if="product.product_variant_ids and flag">
                 <b>
-                    <t t-if="product.website_price_difference and website.get_current_pricelist().discount_policy=='without_discount'">
-                        <del class="text-danger mr8" style="white-space: nowrap;" t-esc="compute_currency(product.website_public_price)" t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}" />
-                    </t>
+                    <t t-set="combination_info"
+                       t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>
+                    <t t-if="website.get_current_pricelist().discount_policy=='without_discount'">
+                        <del class="text-danger mr8" style="white-space: nowrap;"
+                             t-esc="compute_currency(product.website_public_price)"
+                             t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
+                        <t t-esc="combination_info['list_price']"
+                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
 
-                    <span t-esc="product.website_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                    <span itemprop="price" style="display:none;" t-esc="product.website_price" />
-                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+                    </t>
+                    <t t-esc="combination_info['price']"
+                       t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+
+
+                    <!--                   -->
+                    <!--                    <span t-esc="product.website_price"-->
+                    <!--                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>-->
+                    <!--                    <span itemprop="price" style="display:none;" t-esc="product.website_price"/>-->
+                    <!--                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>-->
+                    <!--                    <t t-set="website_price"-->
+                    <!--                       t-value="product._website_price"/>-->
+                    <!--                    <span t-esc="product._website_price"-->
+                    <!--                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>-->
+                    <!--                    <span itemprop="price" style="display:none;" t-esc="product.website_price"/>-->
+                    <!--                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>-->
+                    <!--                    <t t-if="website.get_current_pricelist()">-->
+                    <!--                        <t t-esc="product.website_price"-->
+                    <!--                           t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>-->
+                    <!--                    </t>-->
                 </b>
             </div>
         </xpath>
     </template>
 
-    <template id="website_sale.products_description" inherit_id="b2b_ecommerce.products_item" active="False" customize_show="True" name="Product Description">
+    <template id="products_description" inherit_id="b2b_ecommerce.products_item" active="False"
+              customize_show="True" name="Product Description">
         <xpath expr="//div[hasclass('product_price')]" position="before">
             <div class="text-info oe_subdescription" contenteditable="false">
                 <div itemprop="description" t-field="product.description_sale"></div>
@@ -29,21 +53,23 @@
         </xpath>
     </template>
 
-    <template id="website_sale.products_add_to_cart" inherit_id="b2b_ecommerce.products_item" active="False" customize_show="True" name="Add to Cart">
+    <template id="products_add_to_cart" inherit_id="b2b_ecommerce.products_item" active="False"
+              customize_show="True" name="Add to Cart">
         <xpath expr="//div[hasclass('product_price')]" position="inside">
             <t t-set="btn_flag" t-value="True"/>
             <t t-if="user_id.partner_id.name == 'Public user' and b2b_hide_add_cart == 'True'">
                 <t t-set="btn_flag" t-value="False"/>
             </t>
-            <input name="product_id" t-att-value="product.product_variant_id.id" type="hidden" />
+            <input name="product_id" t-att-value="product.product_variant_id.id" type="hidden"/>
             <t t-if="len(product.product_variant_ids) == 1 and btn_flag">
                 <a class="btn btn-default btn-xs a-submit">
-                    <span class="fa fa-shopping-cart" />
+                    <span class="fa fa-shopping-cart"/>
                 </a>
             </t>
             <t t-if="len(product.product_variant_ids) &gt; 1 and btn_flag">
-                <a class="btn btn-default btn-xs" t-att-href="keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
-                    <span class="fa fa-shopping-cart" />
+                <a class="btn btn-default btn-xs"
+                   t-att-href="keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']&gt;1 else None))">
+                    <span class="fa fa-shopping-cart"/>
                 </a>
             </t>
         </xpath>
@@ -62,7 +88,9 @@
             <t t-if="user_id.partner_id.name == 'Public user' and b2b_hide_add_cart == 'True'">
                 <t t-set="btn_flag" t-value="False"/>
             </t>
-            <a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" t-if="btn_flag">Add to Cart</a>
+            <a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#" t-if="btn_flag">
+                Add to Cart
+            </a>
         </xpath>
         <xpath expr="//div[@id='product_details']/p[@class='text-muted']" position="replace">
             <t t-set="text_flag" t-value="True"/>
@@ -70,15 +98,17 @@
                 <t t-set="text_flag" t-value="False"/>
             </t>
             <p class="text-muted" t-if="text_flag">
-              30-day money-back guarantee<br />
-              Free Shipping in U.S.<br />
-              Buy now, get in 2 days
+                30-day money-back guarantee
+                <br/>
+                Free Shipping in U.S.
+                <br/>
+                Buy now, get in 2 days
             </p>
         </xpath>
     </template>
 
     <template id="product_quantity" inherit_id="website_sale.product_quantity">
-        <xpath expr="//div[@class='css_quantity input-group oe_website_spinner']" position="attributes">
+        <xpath expr="//div[@class='css_quantity input-group']" position="attributes">
             <attribute name="t-if">not user_id.partner_id.name == 'Public user'</attribute>
         </xpath>
     </template>

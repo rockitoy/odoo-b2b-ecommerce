@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2017-present  Technaureus Info Solutions(<http://www.technaureus.com/>).
+# This module and its content is copyright of Technaureus Info Solutions Pvt. Ltd.
+# - © Technaureus Info Solutions Pvt. Ltd 2021. All rights reserved.
 
 import json
 import logging
@@ -18,7 +19,8 @@ from odoo.addons.website_sale.controllers.main import TableCompute
 _logger = logging.getLogger(__name__)
 
 PPG = 20  # Products Per Page
-PPR = 4   # Products Per Row
+PPR = 4  # Products Per Row
+
 
 class WebsiteSale(WebsiteSale):
 
@@ -48,7 +50,7 @@ class WebsiteSale(WebsiteSale):
         keep = QueryURL('/shop', category=category and int(category), search=search, attrib=attrib_list,
                         order=post.get('order'))
 
-        compute_currency, pricelist_context, pricelist = self._get_compute_currency_and_context()
+        pricelist_context, pricelist = self._get_pricelist_context()
 
         request.context = dict(request.context, pricelist=pricelist.id, partner=request.env.user.partner_id)
 
@@ -63,6 +65,9 @@ class WebsiteSale(WebsiteSale):
 
         categs = request.env['product.public.category'].search([('parent_id', '=', False)])
         Product = request.env['product.template']
+        # company = product and product._get_current_company(pricelist=pricelist, website=request.website) or pricelist.company_id or request.website.company_id
+        # from_currency = (product or request.env['res.company']._get_main_company()).currency_id
+        # to_currency = pricelist.currency_id
 
         parent_category_ids = []
         if category:
@@ -102,7 +107,6 @@ class WebsiteSale(WebsiteSale):
             'rows': PPR,
             'categories': categs,
             'attributes': attributes,
-            'compute_currency': compute_currency,
             'keep': keep,
             'parent_category_ids': parent_category_ids,
             'b2b_hide_price': b2b_hide_price,
@@ -113,7 +117,7 @@ class WebsiteSale(WebsiteSale):
             values['main_object'] = category
         return request.render("website_sale.products", values)
 
-    @http.route(['/shop/product/<model("product.template"):product>'], type='http', auth="public", website=True)
+    @http.route(['/shop/<model("product.template"):product>'], type='http', auth="public", website=True, sitemap=True)
     def product(self, product, category='', search='', **kwargs):
         product_context = dict(request.env.context,
                                active_id=product.id,
@@ -151,20 +155,15 @@ class WebsiteSale(WebsiteSale):
             'category': category,
             'pricelist': pricelist,
             'attrib_values': attrib_values,
-            # compute_currency deprecated, get from product
             'compute_currency': compute_currency,
             'attrib_set': attrib_set,
             'keep': keep,
             'categories': categs,
             'main_object': product,
             'product': product,
-            'optional_product_ids': [p.with_context({'active_id': p.id}) for p in product.optional_product_ids],
-            # get_attribute_exclusions deprecated, use product method
-            'get_attribute_exclusions': self._get_attribute_exclusions,
             'b2b_hide_price': b2b_hide_price,
             'b2b_hide_add_cart': b2b_hide_add_cart,
             'b2b_hide_common_text': b2b_hide_common_text
 
         }
         return request.render("website_sale.product", values)
-

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2017-present  Technaureus Info Solutions(<http://www.technaureus.com/>).
+# This module and its content is copyright of Technaureus Info Solutions Pvt. Ltd.
+# - © Technaureus Info Solutions Pvt. Ltd 2021. All rights reserved.
 
 from . import main
