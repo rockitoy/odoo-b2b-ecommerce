@@ -4,7 +4,7 @@
 
 {
     'name': 'B2B eCommerce',
-    'version': '14.0.0.0',
+    'version': '14.0.0.1',
     'category': 'Website',
     'sequence': 1,
     'author': 'Technaureus Info Solutions Pvt. Ltd.',
@@ -12,7 +12,7 @@
     'website': 'http://www.technaureus.com/',
     'description': """
 This addon will give option to hide the price and 'Add to Cart' button in eCommerce.""",
-    'depends': ['website_sale'],
+    'depends': ['website_sale', 'website_sale_wishlist'],
     'data': [
         'views/res_config_settings_views.xml',
         'views/templates.xml',
