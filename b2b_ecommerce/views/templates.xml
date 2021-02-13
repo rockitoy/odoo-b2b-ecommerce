@@ -14,10 +14,8 @@
                        t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>
                     <t t-if="website.get_current_pricelist().discount_policy=='without_discount'">
                         <del class="text-danger mr8" style="white-space: nowrap;"
-                             t-esc="compute_currency(product.website_public_price)"
+                             t-esc="combination_info['list_price']"
                              t-options="{'widget': 'monetary', 'display_currency': website.get_current_pricelist().currency_id, 'from_currency': website.currency_id}"/>
-                        <t t-esc="combination_info['list_price']"
-                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
 
                     </t>
                     <t t-esc="combination_info['price']"
@@ -83,19 +81,24 @@
             <t t-if="user_id.partner_id.name == 'Public user' and b2b_hide_common_text == 'True'">
                 <t t-set="text_flag" t-value="False"/>
             </t>
-            <p class="text-muted" t-if="text_flag">
-                30-day money-back guarantee
-                <br/>
-                Free Shipping in U.S.
-                <br/>
-                Buy now, get in 2 days
-            </p>
-            <h3>My Wishlist</h3>
-            <div class="checkbox">
-                <label class='text-muted'><input type="checkbox" id='b2b_wish' value="1" class="mr8"/>Add product to my
-                    cart but keep it in my wishlist
-                </label>
-            </div>
+            <!--            <p class="text-muted" t-if="text_flag">-->
+            <!--                30-day money-back guarantee-->
+            <!--                <br/>-->
+            <!--                Free Shipping in U.S.-->
+            <!--                <br/>-->
+            <!--                Buy now, get in 2 days-->
+            <!--            </p>-->
+            <t t-if="text_flag">
+                <xpath expr="//div[@id='product_details']/p[@class='text-muted']" position="replace">
+                    <h3>My Wishlist</h3>
+                    <div class="checkbox">
+                        <label class='text-muted'><input type="checkbox" id='b2b_wish' value="1" class="mr8"/>Add
+                            product to my
+                            cart but keep it in my wishlist
+                        </label>
+                    </div>
+                </xpath>
+            </t>
         </xpath>
     </template>
 
@@ -176,6 +179,5 @@
         </li>
 
     </template>
-
 
 </odoo>

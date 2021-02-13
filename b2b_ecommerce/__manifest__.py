@@ -4,7 +4,7 @@
 
 {
     'name': 'B2B eCommerce',
-    'version': '14.0.0.1',
+    'version': '14.0.0.3',
     'category': 'Website',
     'sequence': 1,
     'author': 'Technaureus Info Solutions Pvt. Ltd.',
